@@ -1,5 +1,8 @@
+import data from './data';
+
 class Model {
-    constructor() {
+    constructor(data) {
+        this.state = data;
     }
 }
 
@@ -14,4 +17,9 @@ class Controller {
     }
 }
 
+const model = new Model(data);
+
 const app = new Controller(new Model(), new View());
+
+
+console.log(model.state);
