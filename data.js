@@ -39,8 +39,8 @@ function getRandomValues(n) {
         values.push({
             "datetime": formatDate(date),
             "value": sign === 'plus' 
-            ? +(values[i - 1].value + Math.random() * 10).toFixed(2) 
-            : +(values[i - 1].value - Math.random() * 10).toFixed(2) // previous value plus random value with random sign
+            ? +(values[i - 1].value + Math.random()).toFixed(2) 
+            : +(values[i - 1].value - Math.random()).toFixed(2) // previous value plus random value with random sign
         });
     }
     
