@@ -29,7 +29,7 @@ function getRandomValues(n) {
     let date = new Date();
     let values = [{
         "datetime": formatDate(date),
-        "value": +(Math.random() * 100).toFixed(2), // random initial value
+        "value": +(Math.random() * 100).toFixed(2), // random initial value, toFixed(2) is used to get rid of accuracy loss
     }];
 
     for (let i = 1; i < n; i++) {
@@ -39,8 +39,8 @@ function getRandomValues(n) {
         values.push({
             "datetime": formatDate(date),
             "value": sign === 'plus' 
-            ? values[i - 1].value + (+(Math.random() * 10).toFixed(2)) 
-            : values[i - 1].value - (+(Math.random() * 10).toFixed(2)) // previous value plus random value with random sign
+            ? +(values[i - 1].value + Math.random() * 10).toFixed(2) 
+            : +(values[i - 1].value - Math.random() * 10).toFixed(2) // previous value plus random value with random sign
         });
     }
     
