@@ -33,7 +33,7 @@ function getRandomValues(n) {
     }];
 
     for (let i = 1; i < n; i++) {
-        date.setSeconds(date.getSeconds() + 1); // increment datetime by 1 second
+        date.setMinutes(date.getMinutes() + 1); // increment datetime by 1 minute
         let sign = Math.random() > 0.5 ? 'plus' : 'minus'; // random sign
 
         values.push({
