@@ -1,5 +1,5 @@
 import data from './data';
-import './graph.css';
+import './timeSeries.css';
 
 class Model {
     constructor(data) {
@@ -10,7 +10,7 @@ class Model {
 class View {
     constructor() {
         // The root element
-        this.app = this.getElement('#graph');
+        this.app = this.getElement('#timeSeries');
 
         // wrapper
         this.card = this.createElement('article', {
@@ -42,6 +42,7 @@ class View {
             this.scaleNav.append(link);
         });
 
+        // diagrams
         this.navigation.append(this.timeStepNav, this.scaleNav);
         this.card.append(this.header, this.navigation);
         this.app.append(this.card);
