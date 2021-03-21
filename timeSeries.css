@@ -4,7 +4,7 @@
     font-family: 'Roboto', sans-serif;
 }
 
-header {
+#timeSeries header {
     text-align: center;
     margin: 10px 0;
 } 
@@ -19,8 +19,8 @@ div.timeStepNav, div.scaleNav {
     display: inline-block;
 }
 
-a.timeStep, button.scaleNav {
-    margin: 0 2px;
+a.timeStep, button.scale {
+    margin: 0 3px;
     cursor:pointer;
 }
 
@@ -28,7 +28,19 @@ div.scaleNav {
     margin-left: 5px;
 }
 
-button.scaleNav {
+div.timeStepNav {
+    margin-left: 40px;
+}
+
+section.timeSeries {
+    margin: 10px 20px 10px 20px;
+}
+
+#timeSeries footer {
+    margin: 20px 43px;
+}
+
+button.scale {
     height: 30px;
     width: 30px;
     line-height: 20px;

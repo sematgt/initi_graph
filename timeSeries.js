@@ -35,16 +35,31 @@ class View {
         this.scaleNav = this.createElement('div', {'class': 'scaleNav'});
         ['-', '+', '<', '>'].forEach(symbol => {
             const link = this.createElement('button', {
-                'class': 'scaleNav',
+                'class': 'scale',
                 'id': symbol,
             });
             link.innerText = symbol;
             this.scaleNav.append(link);
         });
 
-        // diagrams
+        // Charts
+        this.charts = this.createElement('section', {'class': 'timeSeries'});
+        this.canvas = this.createElement('canvas', {
+            'width': '90%',
+            'height': '90%',
+        });
+        const ctx = this.canvas.getContext('2d');
+        ctx.fillStyle = 'lightgrey';
+        ctx.fillRect(10, 10, 100, 100);
+
+        this.charts.append(this.canvas);
+
+        // footer
+        this.footer = this.createElement('footer');
+        this.footer.innerText = 'footer';
+
         this.navigation.append(this.timeStepNav, this.scaleNav);
-        this.card.append(this.header, this.navigation);
+        this.card.append(this.header, this.navigation, this.charts, this.footer);
         this.app.append(this.card);
     }
 
