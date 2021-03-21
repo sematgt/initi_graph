@@ -1,6 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+#graph {
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    text-align: center;
+    margin: 10px 0;
+} 
+
 article.card {
     border: 1px solid #EEEEEE;
-    -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-    -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    border-radius: 10px;
+}
+
+div.timeStepNav, div.scaleNav {
+    display: inline-block;
+}
+
+a.timeStep, button.scaleNav {
+    margin: 0 2px;
+    cursor:pointer;
+}
+
+div.scaleNav {
+    margin-left: 5px;
+}
+
+button.scaleNav {
+    height: 30px;
+    width: 30px;
+    line-height: 20px;
+    background-color:#ffffff;
+    border-radius: 50%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 1.23rem;
+    color: #505050d7;
+    border: 0px solid grey;
+    padding: 5px;
+    text-shadow:0px 1px 0px;
+    box-shadow: 2px 2px 4px 0px rgba(34, 60, 80, 0.2);
 }

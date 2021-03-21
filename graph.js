@@ -1,5 +1,5 @@
 import data from './data';
-
+import './graph.css';
 
 class Model {
     constructor(data) {
@@ -12,18 +12,46 @@ class View {
         // The root element
         this.app = this.getElement('#graph');
 
+        // wrapper
         this.card = this.createElement('article', {
             'class': 'card',
         });
 
+        // header
+        this.header = this.createElement('header');
+        this.header.innerText = 'vm01: CPU Temperature All Cores';
 
+        // navigation bar
+        this.navigation = this.createElement('nav');
+        this.timeStepNav = this.createElement('div', {'class': 'timeStepNav'});
+        ['1m', '5m', '15m', '1H', '4H', '1D', '1W'].forEach(timeStep => {
+            const link = this.createElement('a', {
+                'class': 'timeStep',
+                'id': timeStep,
+            });
+            link.innerText = timeStep;
+            this.timeStepNav.append(link);
+        });
+        this.scaleNav = this.createElement('div', {'class': 'scaleNav'});
+        ['-', '+', '<', '>'].forEach(symbol => {
+            const link = this.createElement('button', {
+                'class': 'scaleNav',
+                'id': symbol,
+            });
+            link.innerText = symbol;
+            this.scaleNav.append(link);
+        });
+
+        this.navigation.append(this.timeStepNav, this.scaleNav);
+        this.card.append(this.header, this.navigation);
+        this.app.append(this.card);
     }
 
     // helper functions
     getElement(selector) {
-        return document.getElementById(selector);
+        return document.querySelector(selector);
     }
-    // creating an element and setting an attributes from object
+    // creating an element and setting attributes from the object
     createElement(tag, attrs) {
         const element = document.createElement(tag);
         
