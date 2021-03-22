@@ -1,14 +1,31 @@
 import data from './data';
 import './timeSeries.css';
+import deepClone from './helpers';
 
 class Model {
-    constructor(data) {
-        this.state = data;
+    constructor() {
+        this.data = this.fetchData();
+    }
+
+    reloadData(from, to) {
+        this.data = this.fetchData(from, to);
+    }
+
+    fetchData(from, to) {
+        if (!from || !to) return data;
+
+        let newData = deepClone(data);
+        for (let key of Object.keys(newData)) {
+            newData[key] = newData[key].filter(el => el.datetime >= from && el.datetime <= to);
+        }
+
+        return newData;
     }
 }
 
 class View {
     constructor() {
+
         // The root element
         this.app = this.getElement('#timeSeries');
 
@@ -24,14 +41,17 @@ class View {
         // navigation bar
         this.navigation = this.createElement('nav');
         this.timeStepNav = this.createElement('div', {'class': 'timeStepNav'});
-        ['1m', '5m', '15m', '1H', '4H', '1D', '1W'].forEach(timeStep => {
+        [['1m', 60], ['5m', 60*5], ['15m', 60*15], ['1H', 60*60], ['4H', 60*60*4], ['1D', 60*60*24], ['1W', 60*60*24*7]]
+        .forEach(([timeStep, seconds]) => {
             const link = this.createElement('a', {
                 'class': 'timeStep',
                 'id': timeStep,
+                'seconds': seconds,
             });
             link.innerText = timeStep;
             this.timeStepNav.append(link);
         });
+        this.timeStepNav.firstChild.classList.add('active'); // make '1m' timeStep active
         this.scaleNav = this.createElement('div', {'class': 'scaleNav'});
         ['-', '+', '<', '>'].forEach(symbol => {
             const link = this.createElement('button', {
@@ -63,6 +83,47 @@ class View {
         this.app.append(this.card);
     }
 
+    // handlers
+
+    bindTimeStepChange(handler) {
+        for (let link of this.timeStepNav.childNodes) {
+            link.addEventListener("click", event => {
+                for (let el of event.target.parentNode.querySelectorAll('a.timeStep')) {
+                    el.classList.remove('active');
+                }
+                
+                event.target.classList.add('active');
+
+                handler(event.target.getAttribute('seconds'));
+            })
+        }
+    }
+
+    bindZoomChange(handler) {
+        this.canvas.addEventListener('wheel', event => {
+            if (event.deltaY < 0) { // scrolling up
+                handler('zoomIn');
+            } else if (event.deltaY > 0) { // scrolling down
+                handler('zoomOut');
+            }
+        });
+    }
+
+    bindMoveLeft(handler) {
+
+    }
+
+    bindMoveRight(handler) {
+
+    }
+
+
+    // render
+
+    drawCharts(timeStep, endDateTime, startDateTime, data) {
+        console.log('rendering. state is', timeStep, startDateTime, endDateTime, data);
+    }
+
     // helper functions
     getElement(selector) {
         return document.querySelector(selector);
@@ -85,9 +146,46 @@ class Controller {
     constructor(model, view) {
         this.model = model;
         this.view = view;
+
+        // settings 
+        this.settings = {
+            MAX_VALUE_CELL_UNITS: 12,
+            MIN_VALUE_CELL_UNITS: 8,
+            MAX_TIME_CELL_UNITS: 20,
+            MIN_TIME_CELL_UNITS: 10,
+        };
+
+        // state
+        this.timeStep = '60'; // in seconds
+        this.endDateTime = new Date();
+        this.startDateTime = new Date(this.endDateTime.getTime() - 30 * this.timeStep * 1000),
+
+        this.view.bindTimeStepChange(this.handleTimeStepChange);
+        this.view.bindZoomChange(this.handleZoomChange);
+    }
+
+    handleTimeStepChange = timeStep => {
+        if (this.timeStep === timeStep) return; // no rerender on equal timeStep
+
+        this.timeStep = timeStep;
+        this.endDateTime = new Date();
+        this.startDateTime = new Date(this.endDateTime.getTime() - 30 * this.timeStep * 1000);
+        this.model.reloadData(this.startDateTime, this.endDateTime) // fetch from API
+        this.view.drawCharts(this.timeStep, this.endDateTime, this.startDateTime, this.model.data);
+    }
+
+    handleZoomChange = (direction) => {
+        if (direction === 'zoomIn') {
+            // if (this.
+        } else if (direction === 'zoomOut') {
+
+        }
     }
 }
 
-const app = new Controller(new Model(data), new View());
+const app = new Controller(new Model(), new View());
 
-console.log(app.model.state);
+
+// debug 
+
+console.log(app.model.data);
