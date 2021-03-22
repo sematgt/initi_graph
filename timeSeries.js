@@ -21,6 +21,44 @@ class Model {
 
         return newData;
     }
+
+    getMinValue() {
+        let min;
+
+        for (let key of Object.keys(this.data)) {
+            this.data[key].forEach(el => {
+                if (min === undefined) {
+                    min = el.value;
+                    return;
+                } else {
+                    if (el.value < min) {
+                        min = el.value;
+                    }
+                }
+            })
+        }
+
+        return min;
+    }
+
+    getMaxValue() {
+        let max;
+
+        for (let key of Object.keys(this.data)) {
+            this.data[key].forEach(el => {
+                if (max === undefined) {
+                    max = el.value;
+                    return;
+                } else {
+                    if (el.value > max) {
+                        max = el.value;
+                    }
+                }
+            })
+        }
+
+        return max;
+    }
 }
 
 class View {
@@ -120,8 +158,8 @@ class View {
 
     // render
 
-    drawCharts(timeStep, endDateTime, startDateTime, data) {
-        console.log('rendering. state is', timeStep, startDateTime, endDateTime, data);
+    drawCharts(timeStep, endDateTime, startDateTime, data, minValue, maxValue) {
+        console.log('rendering. state is', arguments);
     }
 
     // helper functions
@@ -171,7 +209,9 @@ class Controller {
         this.endDateTime = new Date();
         this.startDateTime = new Date(this.endDateTime.getTime() - 30 * this.timeStep * 1000);
         this.model.reloadData(this.startDateTime, this.endDateTime) // fetch from API
-        this.view.drawCharts(this.timeStep, this.endDateTime, this.startDateTime, this.model.data);
+        this.minValue = this.model.getMinValue();
+        this.maxValue = this.model.getMaxValue();
+        this.view.drawCharts(this.timeStep, this.endDateTime, this.startDateTime, this.model.data, this.minValue, this.maxValue);
     }
 
     handleZoomChange = (direction) => {
